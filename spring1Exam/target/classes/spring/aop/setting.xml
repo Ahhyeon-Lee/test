@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+	<!-- core concern 객체 : Exam 객체 -->
+	<!-- final Exam exam = new NewlecExam(1,1,1,1); -->
+	<bean id="target" class="spring.aop.entity.NewlecExam" p:kor="1" p:eng="1" p:math="1" p:com="1"/>
+	
+	<!-- cross-cutting concern을 가지고 있는 객체 -->
+	<bean id="AroundAdvice" class="spring.aop.advice.AroundAdvice"/>
+	<bean id="BeforeAdvice" class="spring.aop.advice.BeforeAdvice"/>
+	<bean id="LogAfterReturningAdvice" class="spring.aop.advice.LogAfterReturningAdvice"/>
+	<bean id="AfterThrowingAdvice" class="spring.aop.advice.AfterThrowingAdvice"/>
+	
+	<!-- pointcut -->
+	<!-- 어떤 메소드와 연결할지 -->
+	<!-- <bean id="classicPointCut" class="org.springframework.aop.support.NameMatchMethodPointcut">
+		<property name="mappedName" value="total"/> 
+	</bean> -->
+	
+	<!-- Advisor -->
+	<!-- <bean id="classicBeforeAdvice" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="BeforeAdvice"/>
+		<property name="pointcut" ref="classicPointCut"/>
+	</bean>
+	<bean id="classicAroundAdvice" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="advice" ref="AroundAdvice"/>
+		<property name="pointcut" ref="classicPointCut"/>
+	</bean> -->
+	
+	<!-- pointcut + Advisor -->
+	<bean id="classicBeforeAdvice" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+		<property name="advice" ref="BeforeAdvice"/>
+		<property name="mappedNames">
+			<list>
+				<value>total</value>
+				<value>avg</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="classicAroundAdvice" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+		<property name="advice" ref="AroundAdvice"/>
+		<property name="mappedNames">
+			<list>
+				<value>total</value>
+			</list>
+		</property>
+	</bean>
+	<!-- <bean id="classicBeforeAdvice" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<property name="advice" ref="BeforeAdvice"/>
+		<property name="patterns">
+			<list>
+				<value>.*to.*</value>
+			</list>
+		</property>
+	</bean> -->
+	
+	<!-- core와 cross-cutting concern을 호출할 proxy 객체 -->
+	<bean id="proxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="target"/> <!-- name="target" : setTarget과 같다. -->
+		<property name="interceptorNames">
+			<list>
+				<value>classicAroundAdvice</value>
+				<value>classicBeforeAdvice</value>
+				<value>LogAfterReturningAdvice</value>
+				<value>AfterThrowingAdvice</value>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

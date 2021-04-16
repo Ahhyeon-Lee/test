@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+
+	<context:component-scan base-package="spring.di.ui, spring.di.entity"/>
+	<!-- context라는 패키지를(namespace) 설정한 후 -->
+	<!-- 객체들에 annotation이 있는(configured) 애가 있으니까 객체를 생성할 때 클래스들에 들어가서 찾아봐라 -->
+	<!-- 객체를 생성할 때 결합관계 설정이 xml에 빠져있는지 확인하게 된다. -->
+	<!-- <context:annotation-config/> -->
+
+	<!-- setter로 DI -->
+	<!-- Exam exam = new NewlecExam() -->
+	<bean id="exam" class="spring.di.entity.NewlecExam"/>
+		<!--<property name="kor" value="20"/>
+		<property name="eng" value="50"/>
+		<property name="com" value="80"/>
+		<property name="math">
+			<value>10</value>
+		</property>
+	</bean> -->
+	
+	<!-- 생성자로 DI -->
+	<!-- <bean id="exam" class="spring.di.entity.NewlecExam">
+		<constructor-arg name="kor" type="int" value="10"/>
+		<constructor-arg name="eng" value="10"/>
+		<constructor-arg index="3" value="30"/>
+		<constructor-arg index="2" value="20"/>
+	</bean> -->
+	
+	<!-- namespace로 매개변수 설정 -->
+	<!-- <bean id="exam10" class="spring.di.entity.NewlecExam" p:kor="10" p:eng="10"/>
+	<bean class="spring.di.entity.NewlecExam" p:kor="20" p:eng="20"/> -->
+	
+	
+	<!-- ExamConsole console = new InlineExamConsole(exam); -->
+	<!-- <bean id="console" class="spring.di.ui.InlineExamConsole"/> -->
+	
+	<!-- ExamConsole console = new GridExamConsole(); -->
+	<!-- console.setExam(exam); -->
+	<!-- <bean id="console" class="spring.di.ui.GridExamConsole"> -->
+		<!-- <property name="exam" ref="exam"/> -->
+	<!-- </bean> -->
+	
+	<!-- ArrayList 객체 만들기 -->
+	<!-- 생성자에 list 생성 -->
+	<!-- list : 목록을 세팅하는 list -->
+	<!-- ref : 위에 있는 bean 객체 참조 -->
+	<!-- <bean id="exams" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<bean class="spring.di.entity.NewlecExam" p:kor="10" p:eng="10"/>
+				<ref bean="exam"/>
+			</list>
+		</constructor-arg>
+	</bean> -->
+	
+	<!-- util:list : 목록을 생성하는 list -->
+	<!-- <util:list id="exams" list-class="java.util.ArrayList">
+		<bean class="spring.di.entity.NewlecExam" p:kor="10" p:eng="10" />
+		<ref bean="exam" /> 위에 있는 bean 객체 참조
+	</util:list> -->
+	
+</beans>
