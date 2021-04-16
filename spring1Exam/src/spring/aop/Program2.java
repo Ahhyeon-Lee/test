@@ -24,6 +24,8 @@ public class Program2 {
 		System.out.printf("avg is %f \n", proxy.avg());
 		//System.out.printf("total is %d \n", exam.total());
 		
+		System.out.println("Hellow GitHub");
+		
 
 	}
 
